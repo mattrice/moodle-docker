@@ -162,7 +162,7 @@ msg "Installing XDebug from PECL..."
 bin/moodle-docker-compose exec webserver pecl install xdebug ||true
 
 msg "Generating and injecting XDebug config..."
-# Yes, we are blindly overwriting any existant XDebug config
+# Yes, we are blindly overwriting any existent XDebug config
 bin/moodle-docker-compose exec webserver bash -c "echo '$(xdebug_config)' > /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini"
 
 msg "Enabling XDebug and restarting webserver..."
@@ -172,7 +172,7 @@ bin/moodle-docker-compose restart webserver
 # TODO - run install script, if asked
 #   The CLI script appears to detect existing installation, so always running this is not the worst thing ever
 # Initialize Moodle database for manual testing
-msg "Runnning init scripts..."
+msg "Running init scripts..."
 bin/moodle-docker-compose exec webserver php admin/cli/install_database.php \
   --agree-license \
   --fullname="Docker moodle" \
