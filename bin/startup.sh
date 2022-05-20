@@ -189,9 +189,13 @@ msg "Waiting for database to start..."
 bin/moodle-docker-wait-for-db
 
 # Check for installed PHP modules
-xdebug=$(bin/moodle-docker-compose exec webserver bash -c "php -m | grep xdebug")
-if [ "xdebug" -ne "$xdebug" ]
+xdebug=$(bin/moodle-docker-compose exec webserver bash -c 'php -m' | grep xdebug||true)
+# The double brackets and '*' are needed as grep may return a '\r' after the needle
+#   so we use substring matching instead of literal matching
+if [[ "$xdebug" =~ "xdebug".* ]]
 then
+  msg "XDebug already installed; skipping..."
+else
   msg "Installing XDebug from PECL..."
   # If pecl fails to install xdebug that's OK
   bin/moodle-docker-compose exec webserver pecl install xdebug ||true
