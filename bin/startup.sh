@@ -77,7 +77,7 @@ parse_params() {
   dbengine='mysql'
   dbport=''
   vncport=''
-  project=''
+  project='docker-moodle'
   docker_path='/var/work/docker-moodle/'
 
   while :; do
@@ -173,7 +173,7 @@ fi
 CODE_DIR=/var/work/moodle
 DOCKER_DIR=/var/work/docker-moodle/
 
-export COMPOSE_PROJECT_NAME=docker-moodle
+export COMPOSE_PROJECT_NAME="$project"
 export MOODLE_DOCKER_WEB_PORT="$webport"
 export MOODLE_DOCKER_SELENIUM_VNC_PORT="$vncport"
 export MOODLE_DOCKER_WWWROOT="$CODE_DIR"
@@ -191,7 +191,7 @@ bin/moodle-docker-wait-for-db
 # Check for installed PHP modules
 xdebug=$(bin/moodle-docker-compose exec webserver bash -c 'php -m' | grep xdebug||true)
 # The double brackets and '*' are needed as grep may return a '\r' after the needle
-#   so we use substring matching instead of literal matching
+#   so we use regex matching instead of literal matching
 if [[ "$xdebug" =~ "xdebug".* ]]
 then
   msg "XDebug already installed; skipping..."
